@@ -3,8 +3,10 @@
 bool system_login() //管理员登陆
 {
     int count = N;
-    char getaccount[20] = {"chen"};
-    char getpassword[20] = {"123456"};
+    char getaccount[20] = {0};
+    char getpassword[20] = {0};
+    strcpy(getaccount, admin_name);
+    strcpy(getpassword, admin_password);
     int count_one = 0, count_two = 0, number = 0;
     char input_account[20] = {0};
     char input_password[20] = {0};
@@ -151,7 +153,7 @@ int account_cancellation(P_BANK_DATABASE_T p_bank_database) //销户
         }
         for (int i = 0; i < p_bank_database->user_number; i++)
         {
-            if ((strcmp(delete_account, (p_bank_database->user[i].name))== 0)||(strcmp(delete_account, (p_bank_database->user[i].phone))== 0))
+            if ((strcmp(delete_account, (p_bank_database->user[i].name)) == 0) || (strcmp(delete_account, (p_bank_database->user[i].phone)) == 0))
             {
                 printf("正在删除----\n");
                 for (int j = 0; j < 100; j++)
@@ -228,13 +230,13 @@ int change_all(P_BANK_DATABASE_T p_bank_database) //选择
                     count1 = 0;
                     break;
                 case 1:
-                    change_password(p_bank_database,i);
+                    change_password(p_bank_database, i);
                     break;
                 case 2:
-                    change_name( p_bank_database,i);
+                    change_name(p_bank_database, i);
                     break;
                 case 3:
-                    change_phone( p_bank_database,i);
+                    change_phone(p_bank_database, i);
                     break;
                 default:
                     printf("没有这个选择！\n");
@@ -337,7 +339,7 @@ void change_password(P_BANK_DATABASE_T p_bank_database, int flang) //修改密�
     } while (count1);
 }
 
-void change_name(P_BANK_DATABASE_T p_bank_database,int flang) //修改用户名
+void change_name(P_BANK_DATABASE_T p_bank_database, int flang) //修改用户名
 {
     int count5 = 1, result2 = 0, count6 = 0;
     char change_user_name[24] = {0};
@@ -371,7 +373,7 @@ void change_name(P_BANK_DATABASE_T p_bank_database,int flang) //修改用户名
     }
 }
 
-void change_phone(P_BANK_DATABASE_T p_bank_database,int flang) //修改电话号码
+void change_phone(P_BANK_DATABASE_T p_bank_database, int flang) //修改电话号码
 {
     char name[24] = {0}, newphone[12] = {0};
     int result = 0, count6 = 1, result1 = 0, result2 = 0, result3 = 0, count4 = 0, k = 0;
@@ -407,7 +409,7 @@ void change_phone(P_BANK_DATABASE_T p_bank_database,int flang) //修改电话号
         }
     }
 }
-bool login(P_BANK_DATABASE_T p_bank_database,int *xianzai) //登陆
+bool login(P_BANK_DATABASE_T p_bank_database, int *xianzai) //登陆
 {
     int bnm = 0, i = 0, lop = 2;
     do
@@ -675,7 +677,7 @@ int transfer_accounts(P_BANK_DATABASE_T p_bank_database, int *xincon) //转账
     }
 }
 
-int search_money(P_BANK_DATABASE_T p_bank_database,int *xincon) //查看钱
+int search_money(P_BANK_DATABASE_T p_bank_database, int *xincon) //查看钱
 {
     printf("-------------------查询--------------------\n");
     printf("用户名:%s\n电话号码:%s\n银行卡号:%s\n", (p_bank_database->user[*xincon].name), (p_bank_database->user[*xincon].phone), (p_bank_database->user[*xincon].bank_card));

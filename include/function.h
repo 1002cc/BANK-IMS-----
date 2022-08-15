@@ -11,8 +11,8 @@
 #include "show.h"
 
 #define N 3 //登陆次数
-
-
+#define admin_name "chen"
+#define admin_password "123456"
 typedef struct bank_user_info
 {
     char name[1024];
@@ -28,8 +28,6 @@ typedef struct bank_database
     int user_number;
 } BANK_DATABASE_T, *P_BANK_DATABASE_T, **PP_BANK_DATABASE_T;
 
-
-
 extern void getbank_card(P_BANK_DATABASE_T p_bank_database);
 
 extern bool system_login();                                         //管理员登陆
@@ -37,21 +35,21 @@ extern int open_an_account(P_BANK_DATABASE_T p_bank_database);      //开户;   
 extern int account_cancellation(P_BANK_DATABASE_T p_bank_database); //销户
 extern int search(P_BANK_DATABASE_T p_bank_database);               //查询用户
 
-extern void change_password(P_BANK_DATABASE_T p_bank_database,int flang); //修改密码
-extern bool login(P_BANK_DATABASE_T p_bank_database,int *xianzai);           //登陆
+extern void change_password(P_BANK_DATABASE_T p_bank_database, int flang); //修改密码
+extern bool login(P_BANK_DATABASE_T p_bank_database, int *xianzai);        //登陆
 
 extern int save_money(P_BANK_DATABASE_T p_bank_database, int *xincon);        //存钱
 extern int draw_money(P_BANK_DATABASE_T p_bank_database, int *xincon);        //取钱
 extern int transfer_accounts(P_BANK_DATABASE_T p_bank_database, int *xincon); //转账
-extern int search_money(P_BANK_DATABASE_T p_bank_database,int *xincon);      //查钱
+extern int search_money(P_BANK_DATABASE_T p_bank_database, int *xincon);      //查钱
 
-extern void change_name(P_BANK_DATABASE_T p_bank_database,int flang);        //修改用户名
-extern int two_change_password(P_BANK_DATABASE_T p_bank_database,int *xincon); //修改密码
-extern void change_phone(P_BANK_DATABASE_T p_bank_databaseg,int flang);      //修改电话
+extern void change_name(P_BANK_DATABASE_T p_bank_database, int flang);          //修改用户名
+extern int two_change_password(P_BANK_DATABASE_T p_bank_database, int *xincon); //修改密码
+extern void change_phone(P_BANK_DATABASE_T p_bank_databaseg, int flang);        //修改电话
 
-extern void change_two_all(P_BANK_DATABASE_T p_bank_database,int *xiancon); //客户端修改
-extern int change_all(P_BANK_DATABASE_T p_bank_database);      //修改
-extern int double_menu(P_BANK_DATABASE_T p_bank_database);     //客户端选择
+extern void change_two_all(P_BANK_DATABASE_T p_bank_database, int *xiancon); //客户端修改
+extern int change_all(P_BANK_DATABASE_T p_bank_database);                    //修改
+extern int double_menu(P_BANK_DATABASE_T p_bank_database);                   //客户端选择
 
 extern int reverse(char *p_left, char *p_right); //数据反转
 
