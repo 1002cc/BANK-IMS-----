@@ -23,11 +23,39 @@ void user_menu(void)
 
 void frist_menu(void)
 {
-    printf("************银行信息管理系统**************\n");
+    char bank[8][20] = {"银", "行", "信", "息", "管", "理", "系", "统"};
+    for (int i = 0; i < 13; i++)
+    {
+        printf("*");
+        usleep(60000);
+        fflush(stdout);
+    }
+    for (int i = 0; i < 8; i++)
+    {
+        printf("%s", bank[i]);
+        usleep(60000);
+        fflush(stdout);
+    }
+    for (int i = 0; i < 13; i++)
+    {
+        printf("*");
+        usleep(60000);
+        fflush(stdout);
+    }
+    printf("\n");
     printf("****          1.管理员登陆            ****\n");
+    usleep(60000);
     printf("****           2.客户端               ****\n");
+    usleep(60000);
     printf("****            0.退出                ****\n");
-    printf("*****************************************\n");
+    usleep(60000);
+    for (int i = 0; i < 42; i++)
+    {
+        printf("*");
+        usleep(60000);
+        fflush(stdout);
+    }
+    printf("\n");
 }
 void change(void)
 {
