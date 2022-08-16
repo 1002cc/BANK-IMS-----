@@ -20,8 +20,6 @@ bool system_login() //管理员登陆
         count_two = strcmp(input_password, getpassword);
         if (count_one == 0 && count_two == 0)
         {
-            printf("正在登陆----\n");
-            printf("--登陆成功！--\n");
             return true;
             break;
         }
@@ -186,7 +184,7 @@ int search(P_BANK_DATABASE_T p_bank_database) //查询用户
     for (int i = 0; i < p_bank_database->user_number; i++)
     {
         printf("-------------------------------------------------------------\n");
-        printf("第%d个用户名是:%s\n电话号码是:%s\n 密码是:%s\n银行卡号:%s\n", i + 1,
+        printf("第%d个用户名是:%s\n电话号码是:%s\n密码是:%s\n银行卡号:%s\n", i + 1,
                (p_bank_database->user[i].name), (p_bank_database->user[i].phone),
                (p_bank_database->user[i].password), (p_bank_database->user[i].bank_card));
         printf("-------------------------------------------------------------\n");
@@ -432,8 +430,6 @@ bool login(P_BANK_DATABASE_T p_bank_database, int *xianzai) //登陆
                 bnm = 0;
                 lop = 1;
                 *xianzai = i;
-                printf("正在登陆----\n");
-                printf("--登陆成功！--\n");
                 return true;
                 break;
             }
@@ -462,6 +458,7 @@ int double_menu(P_BANK_DATABASE_T p_bank_database)
     login_user = login(p_bank_database, &xianzai);
     if (login_user == true)
     {
+        progress_bar();
         int chi = 1;
         do
         {
@@ -682,4 +679,8 @@ int search_money(P_BANK_DATABASE_T p_bank_database, int *xincon) //查看钱
     printf("-------------------查询--------------------\n");
     printf("用户名:%s\n电话号码:%s\n银行卡号:%s\n", (p_bank_database->user[*xincon].name), (p_bank_database->user[*xincon].phone), (p_bank_database->user[*xincon].bank_card));
     printf("你的余额为：%s\n", (p_bank_database->user[*xincon].money));
+}
+
+void auto_add_user(P_BANK_DATABASE_T p_bank_database)
+{
 }

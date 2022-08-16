@@ -9,8 +9,5 @@
 #include "function.h"
 
 #define CCB "622728" //建设银行China Construction Bank
-#define RAND(min, max) (rand() % ((int)(max + 1) - (int)min) + (int)min)
-
-
 
 #endif

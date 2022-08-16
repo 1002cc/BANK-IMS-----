@@ -6,7 +6,6 @@
 #include <string.h>
 #include <stdbool.h>
 
-
 int main(int argc, char *argv[])
 {
     int uers_number = 0; //用户数量
@@ -18,21 +17,22 @@ int main(int argc, char *argv[])
     P_BANK_DATABASE_T p_bank_database = &bank_database;
     for (int i = 0; i < 1024; ++i)
     {
-       memset(p_bank_database->user[i].money,48,1);  //money清零
+        memset(p_bank_database->user[i].money, 48, 1); // money清零
     }
-
-    int (*p_func[5])(P_BANK_DATABASE_T) ={open_an_account,account_cancellation,double_menu,search,change_all};
+    printf(CLEAR "\n");
+    int (*p_func[6])(P_BANK_DATABASE_T) = {open_an_account, account_cancellation, double_menu, search, change_all, auto_all};
     while (1)
     {
         int choose1 = 0, result10 = 0;
         frist_menu(); //首菜单
-        printf("请选择：");
+        printf("请输入" BLINK ":" DEFAULT_MODE FONT_BLUE);
         result10 = scanf("%d", &choose1);
         if (result10 != 1)
         {
             while ((result10 = getchar()) != '\n')
                 ;
             printf("输入错误，请重新输入！\n");
+            choose1 = 5;
         }
         switch (choose1)
         {
@@ -43,12 +43,13 @@ int main(int argc, char *argv[])
             login_success = system_login();
             if (login_success == true)
             {
+                progress_bar();
                 int status = true;
                 while (status)
                 {
                     int result9 = 0;
                     admin_menu();
-                    printf("请输入：\n");
+                    printf("请输入" BLINK ":" DEFAULT_MODE FONT_BLUE);
                     result9 = scanf("%d", &status);
                     if (result9 != 1)
                     {
@@ -78,6 +79,9 @@ int main(int argc, char *argv[])
                         break;
                     case 6:
                         status = p_func[4](p_bank_database);
+                        break;
+                    case 7:
+                        status = p_func[5](p_bank_database);
                         break;
                     default:
                         printf("没有这个选项！\n");

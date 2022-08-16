@@ -3,7 +3,7 @@
 
 extern void getbank_card(P_BANK_DATABASE_T p_bank_database)
 {
-    char buf[10245] = {0};
+    char buf[1024] = {0};
     int i;
     srand((unsigned)time(NULL));
     for (i = 0; i < 10; i++)
@@ -53,5 +53,5 @@ extern void getbank_card(P_BANK_DATABASE_T p_bank_database)
     strcat((p_bank_database->user[(p_bank_database->user_number)].bank_card), BIN);
     strcat((p_bank_database->user[(p_bank_database->user_number)].bank_card), buf);
     strncat((p_bank_database->user[(p_bank_database->user_number)].bank_card), &parity_bit, 1);
-    printf("生成的银行卡号为:%s\n", (p_bank_database->user[(p_bank_database->user_number)].bank_card));
+    // printf("生成的银行卡号为:%s\n", (p_bank_database->user[(p_bank_database->user_number)].bank_card));
 }

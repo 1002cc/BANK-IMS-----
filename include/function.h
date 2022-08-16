@@ -9,10 +9,13 @@
 #include <time.h>
 #include "get_bankcard.h"
 #include "show.h"
+#include "../include/auto.h"
 
 #define N 3 //登陆次数
 #define admin_name "chen"
 #define admin_password "123456"
+
+#define RAND(min, max) (rand() % ((int)(max + 1) - (int)(min)) + (int)(min))
 typedef struct bank_user_info
 {
     char name[1024];
@@ -52,5 +55,10 @@ extern int change_all(P_BANK_DATABASE_T p_bank_database);                    //�
 extern int double_menu(P_BANK_DATABASE_T p_bank_database);                   //客户端选择
 
 extern int reverse(char *p_left, char *p_right); //数据反转
+
+int auto_all(P_BANK_DATABASE_T p_bank_database);
+void random_name(char save_name[][1024], int num);
+void random_phone(P_BANK_DATABASE_T p_bank_database, int num);
+void random_password(P_BANK_DATABASE_T p_bank_database, int num);
 
 #endif
