@@ -26,12 +26,6 @@ bool system_login() //管理员登陆
         else
         {
             printf("账号或密码错误，请重新输入！！！！\n");
-            number++;
-            if (number >= 3)
-            {
-                printf("密码输入错误三次，账号已被锁定！！\n");
-                break;
-            }
         }
     }
 }
@@ -176,25 +170,82 @@ int account_cancellation(P_BANK_DATABASE_T p_bank_database) //销户
     return 1;
 }
 
+int unfreeze_the_account(P_BANK_DATABASE_T p_bank_database) //解冻
+{
+    char unfreeze_account[20] = {0};
+    printf("------------------解冻账号-----------------\n");
+    printf("冻结账户:%d\n", p_bank_database->frozen_count);
+    for (int i = 0; i < p_bank_database->frozen_count; i++)
+    {
+        printf("%s\n", p_bank_database->frozen_account[i].frozen_data);
+    }
+    if (p_bank_database->frozen_count == 0)
+    {
+        printf("没有账号被冻结\n");
+        return 1;
+    }
+    printf("请输入解冻账号:");
+    scanf("%s", unfreeze_account);
+    for (int i = 0; i < p_bank_database->frozen_count; i++)
+    {
+        if (strcmp(unfreeze_account, p_bank_database->frozen_account[i].frozen_data) == 0)
+        {
+            memset(p_bank_database->frozen_account[i].frozen_data, '\0', sizeof(FROZEN_T));
+            printf("解冻成功!!\n");
+            return 1;
+        }
+    }
+    return 1;
+}
+
 int search(P_BANK_DATABASE_T p_bank_database) //查询用户
 {
     printf("-------------------查看用户------------------\n");
-    int count1 = 0;
+    int flag = 0;
+    char inquire_user[20] = {0}, all[4] = {"all"}, frozen[7] = {"frozen"};
     printf("当前用户数:%d\n", p_bank_database->user_number);
-    for (int i = 0; i < p_bank_database->user_number; i++)
+    printf("请输入要查询的用户(all为全部显示)(frozen显示冻结账户):\n");
+    scanf("%s", inquire_user);
+    if (strcmp(inquire_user, all) == 0)
     {
-        printf("-------------------------------------------------------------\n");
-        printf("第%d个用户名是:%s\n电话号码是:%s\n密码是:%s\n银行卡号:%s\n", i + 1,
-               (p_bank_database->user[i].name), (p_bank_database->user[i].phone),
-               (p_bank_database->user[i].password), (p_bank_database->user[i].bank_card));
-        printf("-------------------------------------------------------------\n");
+        for (int i = 0; i < p_bank_database->user_number; i++)
+        {
+            printf("-------------------------------------------------------------\n");
+            printf("第%d个用户名是:%s\n电话号码是:%s\n密码是:%s\n银行卡号:%s\n", i + 1,
+                   (p_bank_database->user[i].name), (p_bank_database->user[i].phone),
+                   (p_bank_database->user[i].password), (p_bank_database->user[i].bank_card));
+            printf("-------------------------------------------------------------\n");
+        }
     }
-    printf("返回:0\n");
-    scanf("%d", &count1);
-    if (count1 == 0)
+    else if (strcmp(inquire_user, frozen) == 0)
     {
-        return 1;
+        printf("冻结账户:%d\n", p_bank_database->frozen_count);
+        for (int i = 0; i < p_bank_database->frozen_count; i++)
+        {
+            printf("%s\n", p_bank_database->frozen_account[i].frozen_data);
+        }
     }
+    else
+    {
+        for (int i = 0; i < p_bank_database->user_number; i++)
+        {
+            if (strcmp(p_bank_database->user[i].name, inquire_user) == 0)
+            {
+                flag = 1;
+                printf("-------------------------------------------------------------\n");
+                printf("第%d个用户名是:%s\n电话号码是:%s\n密码是:%s\n银行卡号:%s\n", i + 1,
+                       (p_bank_database->user[i].name), (p_bank_database->user[i].phone),
+                       (p_bank_database->user[i].password), (p_bank_database->user[i].bank_card));
+                printf("-------------------------------------------------------------\n");
+                break;
+            }
+        }
+        if (flag == 0)
+        {
+            printf("没有该用户\n");
+        }
+    }
+    return 1;
 }
 
 int change_all(P_BANK_DATABASE_T p_bank_database) //选择
@@ -259,7 +310,7 @@ void change_two_all(P_BANK_DATABASE_T p_bank_database, int *xianzai)
     while (count1)
     {
         change();
-        printf("请输入：");
+        printf("请输入" BLINK ":" DEFAULT_MODE FONT_BLUE);
         result = scanf("%d", &count);
         if (result != 1)
         {
@@ -412,7 +463,7 @@ bool login(P_BANK_DATABASE_T p_bank_database, int *xianzai) //登陆
     int bnm = 0, i = 0, lop = 2;
     do
     {
-        int count_one = 0, count_two = 0, count_four = 0;
+        int count_one = 1, count_two = 1, count_four = 1;
         char input_account[20] = {0};
         char input_password[20] = {0};
         printf("-------------------登陆--------------------\n");
@@ -420,18 +471,24 @@ bool login(P_BANK_DATABASE_T p_bank_database, int *xianzai) //登陆
         scanf("%s", input_account);
         printf("请输入密码：\n");
         scanf("%s", input_password);
+        for (int i = 0; i < p_bank_database->frozen_count; i++)
+        {
+            if (strcmp(input_account, p_bank_database->frozen_account[i].frozen_data) == 0)
+            {
+                printf("该用户已被冻结,请联系管理员\n");
+                return false;
+            }
+        }
         for (i = 0; i < p_bank_database->user_number; i++)
         {
             count_one = (strcmp(input_account, p_bank_database->user[i].name));
-            count_four = (strcmp(input_account, (p_bank_database->user[i].phone)));
-            count_two = (strcmp(input_password, (p_bank_database->user[i].password)));
+            count_four = (strcmp(input_account, p_bank_database->user[i].phone));
+            count_two = (strcmp(input_password, p_bank_database->user[i].password));
             if ((count_one == 0 || count_four == 0) && count_two == 0)
             {
-                bnm = 0;
                 lop = 1;
                 *xianzai = i;
                 return true;
-                break;
             }
             else
             {
@@ -440,11 +497,15 @@ bool login(P_BANK_DATABASE_T p_bank_database, int *xianzai) //登陆
         }
         if (lop == 0)
         {
-            printf("密码错误，请重新输入！！！！\n");
+            printf("账号密码错误，请重新输入！！！！\n");
             bnm++;
             if (bnm >= 3)
             {
                 printf("输入错误三次，账号已被冻结\n");
+                int k = p_bank_database->frozen_count;
+                strcpy(p_bank_database->frozen_account[k].frozen_data, input_account);
+                p_bank_database->frozen_count++;
+                return false;
                 bnm = 0;
             }
         }
@@ -464,6 +525,7 @@ int double_menu(P_BANK_DATABASE_T p_bank_database)
         {
             int choose1 = 0, result = 0;
             user_menu();
+            printf("请输入" BLINK ":" DEFAULT_MODE FONT_BLUE);
             while (1)
             {
                 result = scanf("%d", &choose1);

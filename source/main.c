@@ -8,8 +8,6 @@
 
 int main(int argc, char *argv[])
 {
-    int uers_number = 0; //用户数量
-    int loi = 1;         //判断管理员是否登陆成功
     bool login_success = false;
 
     BANK_DATABASE_T bank_database;
@@ -20,7 +18,7 @@ int main(int argc, char *argv[])
         memset(p_bank_database->user[i].money, 48, 1); // money清零
     }
     printf(CLEAR "\n");
-    int (*p_func[6])(P_BANK_DATABASE_T) = {open_an_account, account_cancellation, double_menu, search, change_all, auto_all};
+    int (*p_func[7])(P_BANK_DATABASE_T) = {open_an_account, account_cancellation, double_menu, search, change_all, auto_all, unfreeze_the_account};
     while (1)
     {
         int choose1 = 0, result10 = 0;
@@ -81,6 +79,9 @@ int main(int argc, char *argv[])
                         status = p_func[4](p_bank_database);
                         break;
                     case 7:
+                        status = p_func[6](p_bank_database);
+                        break;
+                    case 8:
                         status = p_func[5](p_bank_database);
                         break;
                     default:
