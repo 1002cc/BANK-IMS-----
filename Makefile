@@ -5,7 +5,7 @@ SOURCE=$(wildcard source/*c)
 DONG_JING=$(wildcard -L./library/libmy_stati.a)
 #DONG_JING=$(wildcard -L./library/libmy_auto.so)
 
-binary/kiki: $(SOURCE)
+binary/KIHIO: $(SOURCE)
 	@$(CC) $(SOURCE) -o $@  $(DONG_JING)
 clean:
 	@rm binary/kiki -r

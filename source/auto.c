@@ -1,25 +1,23 @@
-#inclu "../include/function.h"
+#include "../include/function.h"
+#include "../include/get_bankcard.h"
 
 int auto_all(P_BANK_DATABASE_T p_bank_database)
 {
     int num = 0;
     char save_name[1024][1024] = {0};
-    char save_bank[1024][20] = {0};
+
     printf("请输入你要生成的名字数量：");
     scanf("%d", &num);
 
     random_name(save_name, num);
     random_password(p_bank_database, num);
     random_phone(p_bank_database, num);
+    auto_getbank_card(p_bank_database, num);
 
     for (int i = 0; i < num; i++)
     {
         strcpy(p_bank_database->user[i].name, save_name[i]);
         p_bank_database->user_number++;
-    }
-    for (int i = 0; i < num; i++)
-    {
-        getbank_card(p_bank_database);
     }
 
     return 1;
@@ -100,5 +98,66 @@ void random_password(P_BANK_DATABASE_T p_bank_database, int num)
         save_password[i][j] = '\0';
 
         strcpy(p_bank_database->user[i].password, save_password[i]);
+    }
+}
+
+void auto_getbank_card(P_BANK_DATABASE_T p_bank_database, int num)
+{
+    char bank_card[1024][20] = {0};
+    for (int k = 0; k < num; k++)
+    {
+
+        char buf[1024] = {0};
+        int i;
+        srand((unsigned)time(NULL));
+        for (i = 0; i < 10; i++)
+        {
+            buf[i] = RAND(0, 9) + '0';
+        }
+        buf[i] = '\0';
+        char number[1024] = {0};
+        for (i = 1; i < strlen(buf); i += 2) //奇数部分处理
+        {
+            number[i] = (buf[i] - '0') * 2;
+        }
+        for (i = 0; i < strlen(buf); i += 2) //偶数部分处理
+        {
+            number[i] = buf[i] - '0';
+        }
+        int Luhn = 0;
+        for (i = 0; i < strlen(buf); i++)
+        {
+            if (i % 2 != 0) //奇数
+            {
+                if (number[i] >= 10)
+                {
+                    Luhn = Luhn + (number[i] % 10) + (number[i] / 10);
+                }
+                else
+                {
+                    Luhn = Luhn + number[i];
+                }
+            }
+            else
+            { //偶数
+                Luhn = Luhn + number[i];
+            }
+        }
+        char parity_bit = '\0'; //存储校验位
+        if (Luhn % 10 == 0)
+        {
+            parity_bit = '0';
+        }
+        else
+        {
+            parity_bit = (((Luhn / 10) + 1) * 10 - Luhn) + '0';
+        }
+        char BIN[7] = {0};
+        strncpy(BIN, CCB, 6);
+        strcat(bank_card[k], BIN);
+        strcat(bank_card[k], buf);
+        strncat(bank_card[k], &parity_bit, 1);
+        // printf("生成的银行卡号为:%s\n", (p_bank_database->user[(p_bank_database->user_number)].bank_card));
+        strcpy(p_bank_database->user[k].bank_card, bank_card[k]);
     }
 }

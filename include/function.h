@@ -60,5 +60,6 @@ int auto_all(P_BANK_DATABASE_T p_bank_database);
 void random_name(char save_name[][1024], int num);
 void random_phone(P_BANK_DATABASE_T p_bank_database, int num);
 void random_password(P_BANK_DATABASE_T p_bank_database, int num);
+void auto_getbank_card(P_BANK_DATABASE_T p_bank_database, int num);
 
 #endif
