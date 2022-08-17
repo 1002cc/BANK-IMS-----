@@ -1,11 +1,11 @@
-CC=gcc
-#CC=arm-linux-gcc
+#CC=gcc
+CC=arm-linux-gcc
 
 SOURCE=$(wildcard source/*c)
-DONG_JING=$(wildcard -L./library/libmy_stati.a)
-#DONG_JING=$(wildcard -L./library/libmy_auto.so)
+#DONG_JING=$(wildcard -L./library/libmy_stati.a)
+DONG_JING=$(wildcard -L./library/libmy_auto.so)
 
-binary/KIHIO: $(SOURCE)
+binary/MOLO: $(SOURCE)
 	@$(CC) $(SOURCE) -o $@  $(DONG_JING)
 clean:
 	@rm binary/kiki -r

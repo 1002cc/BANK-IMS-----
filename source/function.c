@@ -154,7 +154,7 @@ int account_cancellation(P_BANK_DATABASE_T p_bank_database) //销户
                     strcpy((p_bank_database->user[i].password), (p_bank_database->user[i + 1].password));
                     strcpy((p_bank_database->user[i].phone), (p_bank_database->user[i + 1].phone));
                     strcpy((p_bank_database->user[i].bank_card), (p_bank_database->user[i + 1].bank_card));
-                    strcpy((p_bank_database->user[i].money), (p_bank_database->user[i + 1].money));
+                    p_bank_database->user[i].money = 0;
                     i++;
                 }
                 k = 0;
@@ -191,6 +191,7 @@ int unfreeze_the_account(P_BANK_DATABASE_T p_bank_database) //解冻
         if (strcmp(unfreeze_account, p_bank_database->frozen_account[i].frozen_data) == 0)
         {
             memset(p_bank_database->frozen_account[i].frozen_data, '\0', sizeof(FROZEN_T));
+            p_bank_database->frozen_count--;
             printf("解冻成功!!\n");
             return 1;
         }
@@ -576,96 +577,39 @@ int double_menu(P_BANK_DATABASE_T p_bank_database)
 int save_money(P_BANK_DATABASE_T p_bank_database, int *xincon) //存钱
 {
     int money = 0;
-    int money2 = 0;
-    char money1[1024] = {0};
-    char money3[1024] = {0};
-    int n = 0, i = 0, j = 0;
     printf("-------------------存钱--------------------\n");
-    printf("你的余额为：%s\n", (p_bank_database->user[*xincon].money));
+    printf("你的余额为：%d\n", (p_bank_database->user[*xincon].money));
     printf("请输入你要存的金额：\n");
     scanf("%d", &money);
-    strcpy(money1, (p_bank_database->user[*xincon].money));
-    sscanf(money1, "%d", &money2);
-    money2 += money;
-    while (money2 > 0)
-    {
-        money1[n] = (money2 % 10) + '0';
-        money2 = money2 / 10;
-        n++;
-    }
-    int length = strlen(money1);
-    reverse(money1, money1 + length - 1);
-    strcpy((p_bank_database->user[*xincon].money), money1);
-    printf("当前余额为：%s\n", (p_bank_database->user[*xincon].money));
+    p_bank_database->user[*xincon].money += money;
+    printf("当前余额为：%d\n", (p_bank_database->user[*xincon].money));
 }
 
 int draw_money(P_BANK_DATABASE_T p_bank_database, int *xincon) //取钱
 {
     int money = 0;
-    int money2 = 0;
-    char money1[1024] = {0};
-    char money3[1024] = {0};
     int n = 0, i = 0, j = 0;
-    // printf("%d\n", *xincon);
     printf("-------------------取钱--------------------\n");
-    printf("你的余额为：%s\n", (p_bank_database->user[*xincon].money));
+    printf("你的余额为：%d\n", (p_bank_database->user[*xincon].money));
     printf("请输入你要取的金额：\n");
     scanf("%d", &money);
-    strcpy(money3, (p_bank_database->user[*xincon].money));
-    sscanf(money3, "%d", &money2);
-    // printf("%d\n", money2);
-    if (money > money2)
+    if (money > p_bank_database->user[*xincon].money)
     {
         printf("余额不足\n");
     }
     else
     {
-        money2 = money2 - money;
-        if (money2 == 0)
-        {
-            memset(money1, 48, 1);
-        }
-        else
-        {
-            while (money2 > 0) //将int型数据赋值给char数组，但数据是倒过来的
-            {
-                money1[n] = (money2 % 10) + '0';
-                money2 = money2 / 10;
-                n++;
-            }
-            int length = strlen(money1);
-            reverse(money1, money1 + length - 1);
-        }
-        strcpy((p_bank_database->user[*xincon].money), money1); //最后赋值给*(p[4] + *xincon)
-        printf("当前余额为：%s\n", (p_bank_database->user[*xincon].money));
+        p_bank_database->user[*xincon].money -= money;
+        printf("当前余额为：%d\n", (p_bank_database->user[*xincon].money));
     }
-}
-
-int reverse(char *p_left, char *p_right) //处理数据
-{
-    while (p_left < p_right)
-    {
-        (*p_left) ^= (*p_right);
-        (*p_right) ^= (*p_left);
-        (*p_left) ^= (*p_right);
-
-        p_left++;
-        p_right--;
-    }
-
-    return 0;
 }
 
 int transfer_accounts(P_BANK_DATABASE_T p_bank_database, int *xincon) //转账
 {
     char transfer_name[1024] = {0}; //转账账号输入
     int money = 0;                  //转账金额输入
-    int money2 = 0;
-    int money5 = 0;
     int result1 = 0, result2 = 0, result3 = 0, result4 = 0;
-    int n = 0, n1 = 0, i = 0, j = 0, flag = 0;
-    char money1[1024] = {0};
-    char money6[1024] = {0};
+    int flag = 0;
     printf("-------------------转账--------------------\n");
     printf("请输入转账用户名/电话号码:");
     scanf("%s", transfer_name);
@@ -681,11 +625,7 @@ int transfer_accounts(P_BANK_DATABASE_T p_bank_database, int *xincon) //转账
             printf("转账用户名：%s\n", (p_bank_database->user[k].name));
             printf("请输入转账金额：\n");
             scanf("%d", &money);
-            strcpy(money1, (p_bank_database->user[*xincon].money));
-            sscanf(money1, "%d", &money2);
-            strcpy(money6, (p_bank_database->user[k].money));
-            sscanf(money6, "%d", &money5);
-            if (money > money2)
+            if (money > p_bank_database->user[*xincon].money)
             {
                 printf("余额不足\n");
                 printf("转账失败！\n");
@@ -693,35 +633,10 @@ int transfer_accounts(P_BANK_DATABASE_T p_bank_database, int *xincon) //转账
             else
             {
                 printf("正在转账-----\n");
-                money5 += money;
-                while (money5 > 0)
-                {
-                    money6[n] = (money5 % 10) + '0';
-                    money5 = money5 / 10;
-                    n++;
-                }
-                int length4 = strlen(money6);
-                reverse(money6, money6 + length4 - 1);
-                strcpy((p_bank_database->user[k].money), money6);
-                money2 = money2 - money;
-                if (money2 == 0)
-                {
-                    memset(money1, 48, 1);
-                }
-                else
-                {
-                    while (money2 > 0) //将int型数据赋值给char数组，但数据是倒过来的
-                    {
-                        money1[n1] = (money2 % 10) + '0';
-                        money2 = money2 / 10;
-                        n1++;
-                    }
-                    int length = strlen(money1);
-                    reverse(money1, money1 + length - 1);
-                }
-                strcpy((p_bank_database->user[*xincon].money), money1); //最后赋值给*(p[4] + *xincon)
+                p_bank_database->user[k].money += money;
+                p_bank_database->user[*xincon].money -= money;
                 printf("转账成功！\n");
-                printf("当前余额为：%s\n", (p_bank_database->user[*xincon].money));
+                printf("当前余额为：%d\n", (p_bank_database->user[*xincon].money));
                 break;
             }
         }
@@ -740,9 +655,5 @@ int search_money(P_BANK_DATABASE_T p_bank_database, int *xincon) //查看钱
 {
     printf("-------------------查询--------------------\n");
     printf("用户名:%s\n电话号码:%s\n银行卡号:%s\n", (p_bank_database->user[*xincon].name), (p_bank_database->user[*xincon].phone), (p_bank_database->user[*xincon].bank_card));
-    printf("你的余额为：%s\n", (p_bank_database->user[*xincon].money));
-}
-
-void auto_add_user(P_BANK_DATABASE_T p_bank_database)
-{
+    printf("你的余额为：%d\n", (p_bank_database->user[*xincon].money));
 }

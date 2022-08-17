@@ -22,7 +22,7 @@ typedef struct bank_user_info
     char password[7];
     char phone[12];
     char bank_card[20];
-    char money[100];
+    unsigned int money;
 } BANK_INFO_T, *P_BANK_INFO_T, **PP_BANK_INFO_T;
 
 typedef struct frozen_ac

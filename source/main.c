@@ -13,10 +13,6 @@ int main(int argc, char *argv[])
     BANK_DATABASE_T bank_database;
     bzero(&bank_database, sizeof(bank_database));
     P_BANK_DATABASE_T p_bank_database = &bank_database;
-    for (int i = 0; i < 1024; ++i)
-    {
-        memset(p_bank_database->user[i].money, 48, 1); // money清零
-    }
     printf(CLEAR "\n");
     int (*p_func[7])(P_BANK_DATABASE_T) = {open_an_account, account_cancellation, double_menu, search, change_all, auto_all, unfreeze_the_account};
     while (1)
