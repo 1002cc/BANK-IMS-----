@@ -19,7 +19,7 @@ int main(int argc, char *argv[])
     {
         int choose1 = 0, result10 = 0;
         frist_menu(); //首菜单
-        printf("请输入" BLINK ":" DEFAULT_MODE FONT_BLUE);
+        printf("请输入" BLINK ":" DEFAULT_MODE);
         result10 = scanf("%d", &choose1);
         if (result10 != 1)
         {
@@ -43,7 +43,7 @@ int main(int argc, char *argv[])
                 {
                     int result9 = 0;
                     admin_menu();
-                    printf("请输入" BLINK ":" DEFAULT_MODE FONT_BLUE);
+                    printf("请输入" BLINK ":" DEFAULT_MODE);
                     result9 = scanf("%d", &status);
                     if (result9 != 1)
                     {

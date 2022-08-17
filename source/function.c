@@ -266,7 +266,7 @@ int change_all(P_BANK_DATABASE_T p_bank_database) //选择
             do
             {
                 change();
-                printf("请输入：");
+                printf("请输入" BLINK ":" DEFAULT_MODE );
                 result = scanf("%d", &count);
                 if (result != 1)
                 {
@@ -311,7 +311,7 @@ void change_two_all(P_BANK_DATABASE_T p_bank_database, int *xianzai)
     while (count1)
     {
         change();
-        printf("请输入" BLINK ":" DEFAULT_MODE FONT_BLUE);
+        printf("请输入" BLINK ":" DEFAULT_MODE );
         result = scanf("%d", &count);
         if (result != 1)
         {

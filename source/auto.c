@@ -75,7 +75,7 @@ void random_phone(P_BANK_DATABASE_T p_bank_database, int num)
         save_phone[i][0] = '1';
         save_phone[i][1] = '8';
         save_phone[i][2] = '9';
-        for (j = 3; j < 12; j++)
+        for (j = 3; j < 11; j++)
         {
             save_phone[i][j] = RAND(0, 9) + '0';
         }

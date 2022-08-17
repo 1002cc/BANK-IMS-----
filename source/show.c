@@ -2,7 +2,7 @@
 
 void admin_menu(void)
 {
-    printf(FONT_BLUE "============银行系统(管理员)============\n");
+    printf("============银行系统(管理员)============\n");
     printf("---*           1.状态机            *---\n");
     printf("---*           2.开户              *---\n");
     printf("---*           3.销户              *---\n");
@@ -27,7 +27,7 @@ void frist_menu(void)
     char bank[8][20] = {"银", "行", "信", "息", "管", "理", "系", "统"};
     for (int i = 0; i < 13; i++)
     {
-        printf(FONT_BLUE "*");
+        printf("*");
         usleep(50000);
         fflush(stdout);
     }
