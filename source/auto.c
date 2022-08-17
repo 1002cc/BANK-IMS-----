@@ -12,6 +12,7 @@ int auto_all(P_BANK_DATABASE_T p_bank_database)
     random_name(save_name, num);
     random_password(p_bank_database, num);
     random_phone(p_bank_database, num);
+    srand((unsigned)time(NULL));
     auto_getbank_card(p_bank_database, num);
 
     for (int i = 0; i < num; i++)
@@ -104,28 +105,27 @@ void random_password(P_BANK_DATABASE_T p_bank_database, int num)
 void auto_getbank_card(P_BANK_DATABASE_T p_bank_database, int num)
 {
     char bank_card[1024][20] = {0};
+    char buf[1024][11] = {0};
     for (int k = 0; k < num; k++)
     {
-
-        char buf[1024] = {0};
         int i;
-        srand((unsigned)time(NULL));
+
         for (i = 0; i < 10; i++)
         {
-            buf[i] = RAND(0, 9) + '0';
+            buf[k][i] = RAND(0, 9) + '0';
         }
-        buf[i] = '\0';
+        buf[k][i] = '\0';
         char number[1024] = {0};
-        for (i = 1; i < strlen(buf); i += 2) //奇数部分处理
+        for (i = 1; i < 10; i += 2) //奇数部分处理
         {
-            number[i] = (buf[i] - '0') * 2;
+            number[i] = (buf[k][i] - '0') * 2;
         }
-        for (i = 0; i < strlen(buf); i += 2) //偶数部分处理
+        for (i = 0; i < 10; i += 2) //偶数部分处理
         {
-            number[i] = buf[i] - '0';
+            number[i] = buf[k][i] - '0';
         }
         int Luhn = 0;
-        for (i = 0; i < strlen(buf); i++)
+        for (i = 0; i < 10; i++)
         {
             if (i % 2 != 0) //奇数
             {
@@ -155,7 +155,7 @@ void auto_getbank_card(P_BANK_DATABASE_T p_bank_database, int num)
         char BIN[7] = {0};
         strncpy(BIN, CCB, 6);
         strcat(bank_card[k], BIN);
-        strcat(bank_card[k], buf);
+        strcat(bank_card[k], buf[k]);
         strncat(bank_card[k], &parity_bit, 1);
         // printf("生成的银行卡号为:%s\n", (p_bank_database->user[(p_bank_database->user_number)].bank_card));
         strcpy(p_bank_database->user[k].bank_card, bank_card[k]);
