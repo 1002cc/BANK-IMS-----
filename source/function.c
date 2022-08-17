@@ -2,15 +2,12 @@
 
 bool system_login() //管理员登陆
 {
-    int count = N;
-    char getaccount[20] = {0};
-    char getpassword[20] = {0};
-    strcpy(getaccount, admin_name);
-    strcpy(getpassword, admin_password);
-    int count_one = 0, count_two = 0, number = 0;
-    char input_account[20] = {0};
-    char input_password[20] = {0};
-    for (int i = 0; i < count; i++)
+    char getaccount[10] = {admin_name};
+    char getpassword[7] = {admin_password};
+    int count_one = 0, count_two = 0;
+    char input_account[10] = {0};
+    char input_password[7] = {0};
+    for (int i = 0; i < N; i++)
     {
         printf("请输入账号：\n");
         scanf("%s", input_account);
@@ -124,14 +121,20 @@ int open_an_account(P_BANK_DATABASE_T p_bank_database) //开户
 int account_cancellation(P_BANK_DATABASE_T p_bank_database) //销户
 {
     printf("---------------------销户--------------------\n");
+    if (p_bank_database->user_number == 0)
+    {
+        printf("数据库中没有一个用户\n");
+        return 1;
+    }
+    printf("-------------------------------------------------------------\n");
     for (int i = 0; i < p_bank_database->user_number; i++)
     {
-        printf("-------------------------------------------------------------\n");
         printf("第%d位用户\n用户名:%s\n", i + 1, (p_bank_database->user[i].name));
-        printf("-------------------------------------------------------------\n");
     }
+    printf("-------------------------------------------------------------\n");
     int result = 0, k = 1, count = 1;
     char delete_account[24] = {0};
+
     for (int j = 0; j < count; j++)
     {
         printf("请输入要删除的用户：\n");
@@ -148,9 +151,9 @@ int account_cancellation(P_BANK_DATABASE_T p_bank_database) //销户
             if ((strcmp(delete_account, (p_bank_database->user[i].name)) == 0) || (strcmp(delete_account, (p_bank_database->user[i].phone)) == 0))
             {
                 printf("正在删除----\n");
-                for (int j = 0; j < 100; j++)
+                for (int j = 0; j < p_bank_database->user_number; j++)
                 {
-                    strcpy((p_bank_database->user[i].name), (p_bank_database->user[i + 1].name)); //*p[0]
+                    strcpy((p_bank_database->user[i].name), (p_bank_database->user[i + 1].name));
                     strcpy((p_bank_database->user[i].password), (p_bank_database->user[i + 1].password));
                     strcpy((p_bank_database->user[i].phone), (p_bank_database->user[i + 1].phone));
                     strcpy((p_bank_database->user[i].bank_card), (p_bank_database->user[i + 1].bank_card));
@@ -160,6 +163,7 @@ int account_cancellation(P_BANK_DATABASE_T p_bank_database) //销户
                 k = 0;
                 (p_bank_database->user_number)--;
                 printf("删除完成\n");
+                break;
             }
         }
         if (k == 1)
@@ -203,6 +207,11 @@ int search(P_BANK_DATABASE_T p_bank_database) //查询用户
 {
     printf("-------------------查看用户------------------\n");
     int flag = 0;
+    if (p_bank_database->user_number == 0)
+    {
+        printf("数据库中没有一个用户\n");
+        return 1;
+    }
     char inquire_user[20] = {0}, all[4] = {"all"}, frozen[7] = {"frozen"};
     printf("当前用户数:%d\n", p_bank_database->user_number);
     printf("请输入要查询的用户(all为全部显示)(frozen显示冻结账户):\n");
@@ -266,7 +275,7 @@ int change_all(P_BANK_DATABASE_T p_bank_database) //选择
             do
             {
                 change();
-                printf("请输入" BLINK ":" DEFAULT_MODE );
+                printf("请输入" BLINK ":" DEFAULT_MODE);
                 result = scanf("%d", &count);
                 if (result != 1)
                 {
@@ -311,7 +320,7 @@ void change_two_all(P_BANK_DATABASE_T p_bank_database, int *xianzai)
     while (count1)
     {
         change();
-        printf("请输入" BLINK ":" DEFAULT_MODE );
+        printf("请输入" BLINK ":" DEFAULT_MODE);
         result = scanf("%d", &count);
         if (result != 1)
         {

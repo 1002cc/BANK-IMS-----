@@ -17,13 +17,13 @@ int main(int argc, char *argv[])
     int (*p_func[7])(P_BANK_DATABASE_T) = {open_an_account, account_cancellation, double_menu, search, change_all, auto_all, unfreeze_the_account};
     while (1)
     {
-        int choose1 = 0, result10 = 0;
+        int choose1 = 0, result = 0;
         frist_menu(); //首菜单
         printf("请输入" BLINK ":" DEFAULT_MODE);
-        result10 = scanf("%d", &choose1);
-        if (result10 != 1)
+        result = scanf("%d", &choose1);
+        if (result != 1)
         {
-            while ((result10 = getchar()) != '\n')
+            while ((result = getchar()) != '\n')
                 ;
             printf("输入错误，请重新输入！\n");
             choose1 = 5;
@@ -41,13 +41,13 @@ int main(int argc, char *argv[])
                 int status = true;
                 while (status)
                 {
-                    int result9 = 0;
+                    int result1 = 0;
                     admin_menu();
                     printf("请输入" BLINK ":" DEFAULT_MODE);
-                    result9 = scanf("%d", &status);
-                    if (result9 != 1)
+                    result1 = scanf("%d", &status);
+                    if (result1 != 1)
                     {
-                        while ((result9 = getchar()) != '\n')
+                        while ((result1 = getchar()) != '\n')
                             ;
                         printf("输入错误，请重新输入！\n");
                     }
@@ -88,7 +88,7 @@ int main(int argc, char *argv[])
             }
             break;
         case 2:
-            double_menu(p_bank_database);
+            p_func[2](p_bank_database);
             break;
         default:
             printf("没有这个选项！\n");
