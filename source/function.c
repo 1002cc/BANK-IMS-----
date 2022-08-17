@@ -264,6 +264,11 @@ int change_all(P_BANK_DATABASE_T p_bank_database) //选择
     int result1 = 0;
     int flag = 0, flag1 = 0;
     char change_user_name[24] = {0};
+    if (p_bank_database->user_number == 0)
+    {
+        printf("数据库中没有一个用户\n");
+        return 1;
+    }
     printf("-----------------修改------------------\n");
     printf("请输入用户名：");
     scanf("%s", change_user_name);
@@ -524,6 +529,11 @@ bool login(P_BANK_DATABASE_T p_bank_database, int *xianzai) //登陆
 
 int double_menu(P_BANK_DATABASE_T p_bank_database)
 {
+    if (p_bank_database->user_number == 0)
+    {
+        printf("数据库中没有一个用户\n");
+        return 1;
+    }
     bool login_user = false;
     int xianzai = 0; //判断现在登陆的用户是谁
     login_user = login(p_bank_database, &xianzai);
