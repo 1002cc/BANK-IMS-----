@@ -25,6 +25,7 @@ bool system_login() //管理员登陆
             printf("账号或密码错误，请重新输入！！！！\n");
         }
     }
+    return false;
 }
 
 int open_an_account(P_BANK_DATABASE_T p_bank_database) //开户
@@ -135,49 +136,46 @@ int write_data(P_BANK_DATABASE_T p_bank_database)
 int read_data(P_BANK_DATABASE_T p_bank_database)
 {
     int n = 0, i = 0;
+    char buf[100] = {0};
     FILE *fp = fopen("database.txt", "r");
-    char *p = (char *)malloc(sizeof(char) * 100);
     printf("正在加载数据----\n");
     if (!fp)
         return -1;
-    memset(p, 0, 100);
-    fgets(p, 100, fp);
-    p[strlen(p) - 1] = '\0';
-    p_bank_database->user_number = *p - '0';
+    memset(buf, 0, 100);
+    buf[strlen(buf) - 1] = '\0';
+    fgets(buf, 100, fp);
+    sscanf(buf, "%d", &p_bank_database->user_number);
     printf("user_number:%d", p_bank_database->user_number);
     while (!feof(fp))
     {
+        memset(buf, 0, 100);
+        fgets(buf, 100, fp);
+        buf[strlen(buf) - 1] = '\0';
+        strcpy(p_bank_database->user[i].name, buf);
 
-        memset(p, 0, 100);
-        fgets(p, 100, fp);
-        p[strlen(p) - 1] = '\0';
-        strcpy(p_bank_database->user[i].name, p);
+        memset(buf, 0, 100);
+        fgets(buf, 100, fp);
+        buf[strlen(buf) - 1] = '\0';
+        strcpy(p_bank_database->user[i].phone, buf);
 
-        memset(p, 0, 100);
-        fgets(p, 100, fp);
-        p[strlen(p) - 1] = '\0';
-        strcpy(p_bank_database->user[i].phone, p);
+        memset(buf, 0, 100);
+        fgets(buf, 100, fp);
+        buf[strlen(buf) - 1] = '\0';
+        strcpy(p_bank_database->user[i].password, buf);
 
-        memset(p, 0, 100);
-        fgets(p, 100, fp);
-        p[strlen(p) - 1] = '\0';
-        strcpy(p_bank_database->user[i].password, p);
+        memset(buf, 0, 100);
+        fgets(buf, 100, fp);
+        buf[strlen(buf) - 1] = '\0';
+        strcpy(p_bank_database->user[i].bank_card, buf);
 
-        memset(p, 0, 100);
-        fgets(p, 100, fp);
-        p[strlen(p) - 1] = '\0';
-        strcpy(p_bank_database->user[i].bank_card, p);
-
-        memset(p, 0, 100);
-        fgets(p, 100, fp);
-        p[strlen(p) - 1] = '\0';
-        p_bank_database->user[i].money = *p;
+        memset(buf, 0, 100);
+        fgets(buf, 100, fp);
+        buf[strlen(buf) - 1] = '\0';
+        sscanf(buf, "%d", &p_bank_database->user[i].money);
 
         i++;
     }
-    printf("%s", p);
-    free(p);
-    printf("数据加载完成\n");
+    printf("\n数据加载完成\n");
     fclose(fp);
 }
 
@@ -284,9 +282,9 @@ int search(P_BANK_DATABASE_T p_bank_database) //查询用户
         for (int i = 0; i < p_bank_database->user_number; i++)
         {
             printf("-------------------------------------------------------------\n");
-            printf("第%d个用户名是:%s\n电话号码是:%s\n密码是:%s\n银行卡号:%s\n", i + 1,
+            printf("第%d个用户名是:%s\n电话号码是:%s\n密码是:%s\n银行卡号:%s\n金额%d\n", i + 1,
                    (p_bank_database->user[i].name), (p_bank_database->user[i].phone),
-                   (p_bank_database->user[i].password), (p_bank_database->user[i].bank_card));
+                   (p_bank_database->user[i].password), (p_bank_database->user[i].bank_card), (p_bank_database->user[i].money));
             printf("-------------------------------------------------------------\n");
         }
     }

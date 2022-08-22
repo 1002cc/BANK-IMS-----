@@ -8,14 +8,14 @@ int auto_all(P_BANK_DATABASE_T p_bank_database)
 
     printf("请输入你要生成的名字数量：");
     scanf("%d", &num);
-
-    random_name(save_name, num);
+    num += p_bank_database->user_number;
+    random_name(save_name, num,p_bank_database);
     random_password(p_bank_database, num);
     random_phone(p_bank_database, num);
     srand((unsigned)time(NULL));
     auto_getbank_card(p_bank_database, num);
 
-    for (int i = 0; i < num; i++)
+    for (int i = p_bank_database->user_number; i < num; i++)
     {
         strcpy(p_bank_database->user[i].name, save_name[i]);
         p_bank_database->user_number++;
@@ -24,7 +24,7 @@ int auto_all(P_BANK_DATABASE_T p_bank_database)
     return 1;
 }
 
-void random_name(char save_name[][1024], int num)
+void random_name(char save_name[][1024], int num,P_BANK_DATABASE_T p_bank_database)
 {
     char xing[50][8] = {"赵", "钱", "孙", "李", "周", "吴", "郑", "王", "冯", "陈", "褚", "卫", "蒋",
                         "沈", "韩", "杨", "朱", "秦", "尤", "许", "何", "吕", "施", "张", "孔", "曹",
@@ -45,7 +45,7 @@ void random_name(char save_name[][1024], int num)
     char *p_ch[3] = {ch, ch1, ch2}; // p_ch[0],p_ch[1],p_ch[2]
     char(*p_save_name)[1024] = save_name;
     srand((unsigned int)time(NULL));
-    for (int i = 0; i < num; i++)
+    for (int i = p_bank_database->user_number; i < num; i++)
     {
         int number = 0;
 
@@ -71,7 +71,7 @@ void random_phone(P_BANK_DATABASE_T p_bank_database, int num)
     srand((unsigned int)time(NULL));
     int i = 0, j = 0;
 
-    for (i = 0; i < num; i++)
+    for (i = p_bank_database->user_number; i < num; i++)
     {
         save_phone[i][0] = '1';
         save_phone[i][1] = '8';
@@ -90,7 +90,7 @@ void random_password(P_BANK_DATABASE_T p_bank_database, int num)
     int i = 0, j = 0;
     char save_password[1024][7] = {0};
     srand((unsigned int)time(NULL));
-    for (i = 0; i < num; i++)
+    for (i = p_bank_database->user_number; i < num; i++)
     {
         for (j = 0; j < 6; j++)
         {
@@ -106,7 +106,7 @@ void auto_getbank_card(P_BANK_DATABASE_T p_bank_database, int num)
 {
     char bank_card[1024][20] = {0};
     char buf[1024][11] = {0};
-    for (int k = 0; k < num; k++)
+    for (int k = p_bank_database->user_number; k < num; k++)
     {
         int i;
 

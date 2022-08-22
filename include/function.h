@@ -40,7 +40,7 @@ typedef struct bank_database
 {
     FROZEN_T frozen_account[100];
     BANK_INFO_T user[1024];
-    int user_number;
+    unsigned int user_number;
     int frozen_count;
 } BANK_DATABASE_T, *P_BANK_DATABASE_T, **PP_BANK_DATABASE_T;
 
@@ -72,7 +72,7 @@ extern int double_menu(P_BANK_DATABASE_T p_bank_database);                   //�
 extern int reverse(char *p_left, char *p_right); //数据反转
 
 extern int auto_all(P_BANK_DATABASE_T p_bank_database);
-extern void random_name(char save_name[][1024], int num);
+extern void random_name(char save_name[][1024], int num, P_BANK_DATABASE_T p_bank_database);
 extern void random_phone(P_BANK_DATABASE_T p_bank_database, int num);
 extern void random_password(P_BANK_DATABASE_T p_bank_database, int num);
 extern void auto_getbank_card(P_BANK_DATABASE_T p_bank_database, int num);
