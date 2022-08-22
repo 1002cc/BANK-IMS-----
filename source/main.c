@@ -15,6 +15,7 @@ int main(int argc, char *argv[])
     P_BANK_DATABASE_T p_bank_database = &bank_database;
     printf(CLEAR "\n");
     int (*p_func[7])(P_BANK_DATABASE_T) = {open_an_account, account_cancellation, double_menu, search, change_all, auto_all, unfreeze_the_account};
+    read_data(p_bank_database);
     while (1)
     {
         int choose1 = 0, result = 0;
@@ -31,6 +32,7 @@ int main(int argc, char *argv[])
         switch (choose1)
         {
         case 0:
+            write_data(p_bank_database);
             return 0;
             break;
         case 1:

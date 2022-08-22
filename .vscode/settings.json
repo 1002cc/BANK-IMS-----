@@ -1,8 +1,9 @@
 {
-    "files.associations": {
-        "*.c": "c",
-        "time.h": "c",
-        "stdio.h": "c"
-    },
-    "C_Cpp.errorSquiggles": "Disabled"
+  "files.associations": {
+    "*.c": "c",
+    "time.h": "c",
+    "stdio.h": "c",
+    "fcntl.h": "c"
+  },
+  "C_Cpp.errorSquiggles": "Disabled"
 }

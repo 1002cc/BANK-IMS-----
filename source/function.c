@@ -32,7 +32,6 @@ int open_an_account(P_BANK_DATABASE_T p_bank_database) //开户
     int count1 = 1, count = 1, count6 = 0;
     int result1 = 0, result2 = 0;
     char name[24] = {0}, phone[12] = {0}, password[7] = {0};
-
     for (int i = 0; i < count; i++)
     {
         int count3 = 1, count4 = 1, count5 = 1;
@@ -104,7 +103,9 @@ int open_an_account(P_BANK_DATABASE_T p_bank_database) //开户
         }
         strcpy(p_bank_database->user[p_bank_database->user_number].password, password);
         getbank_card(p_bank_database);
+
         p_bank_database->user_number++;
+
         printf("继续输入请输入:1  返回请输入:0  \n");
         scanf("%d", &count1);
         if (count1 == 0)
@@ -116,6 +117,68 @@ int open_an_account(P_BANK_DATABASE_T p_bank_database) //开户
             count++;
         }
     }
+}
+
+int write_data(P_BANK_DATABASE_T p_bank_database)
+{
+    FILE *fp = fopen("database.txt", "w");
+    if (!fp)
+        return -1;
+    fprintf(fp, "%d\n", p_bank_database->user_number);
+    for (int i = 0; i < p_bank_database->user_number; ++i)
+    {
+        fprintf(fp, "%s\n%s\n%s\n%s\n%d\n", p_bank_database->user[i].name, p_bank_database->user[i].phone, p_bank_database->user[i].password, p_bank_database->user[i].bank_card, p_bank_database->user[i].money);
+    }
+    fclose(fp);
+}
+
+int read_data(P_BANK_DATABASE_T p_bank_database)
+{
+    int n = 0, i = 0;
+    FILE *fp = fopen("database.txt", "r");
+    char *p = (char *)malloc(sizeof(char) * 100);
+    printf("正在加载数据----\n");
+    if (!fp)
+        return -1;
+    memset(p, 0, 100);
+    fgets(p, 100, fp);
+    p[strlen(p) - 1] = '\0';
+    p_bank_database->user_number = *p - '0';
+    printf("user_number:%d", p_bank_database->user_number);
+    while (!feof(fp))
+    {
+
+        memset(p, 0, 100);
+        fgets(p, 100, fp);
+        p[strlen(p) - 1] = '\0';
+        strcpy(p_bank_database->user[i].name, p);
+
+        memset(p, 0, 100);
+        fgets(p, 100, fp);
+        p[strlen(p) - 1] = '\0';
+        strcpy(p_bank_database->user[i].phone, p);
+
+        memset(p, 0, 100);
+        fgets(p, 100, fp);
+        p[strlen(p) - 1] = '\0';
+        strcpy(p_bank_database->user[i].password, p);
+
+        memset(p, 0, 100);
+        fgets(p, 100, fp);
+        p[strlen(p) - 1] = '\0';
+        strcpy(p_bank_database->user[i].bank_card, p);
+
+        memset(p, 0, 100);
+        fgets(p, 100, fp);
+        p[strlen(p) - 1] = '\0';
+        p_bank_database->user[i].money = *p;
+
+        i++;
+    }
+    printf("%s", p);
+    free(p);
+    printf("数据加载完成\n");
+    fclose(fp);
 }
 
 int account_cancellation(P_BANK_DATABASE_T p_bank_database) //销户
@@ -473,6 +536,7 @@ void change_phone(P_BANK_DATABASE_T p_bank_database, int flang) //修改电话�
         }
     }
 }
+
 bool login(P_BANK_DATABASE_T p_bank_database, int *xianzai) //登陆
 {
     int bnm = 0, i = 0, lop = 2;
@@ -514,7 +578,7 @@ bool login(P_BANK_DATABASE_T p_bank_database, int *xianzai) //登陆
         {
             printf("账号密码错误，请重新输入！！！！\n");
             bnm++;
-            if (bnm >= 3)
+            if (bnm >= N)
             {
                 printf("输入错误三次，账号已被冻结\n");
                 int k = p_bank_database->frozen_count;
@@ -545,7 +609,7 @@ int double_menu(P_BANK_DATABASE_T p_bank_database)
         {
             int choose1 = 0, result = 0;
             user_menu();
-            printf("请输入" BLINK ":" DEFAULT_MODE FONT_BLUE);
+            printf("请输入" BLINK ":" DEFAULT_MODE);
             while (1)
             {
                 result = scanf("%d", &choose1);

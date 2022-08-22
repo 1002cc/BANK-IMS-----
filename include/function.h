@@ -7,6 +7,12 @@
 #include <time.h>
 #include <stdbool.h>
 #include <time.h>
+#include <errno.h> //perror
+
+#include <sys/types.h> //open
+#include <sys/stat.h>  //open
+#include <fcntl.h>     //open
+
 #include "get_bankcard.h"
 #include "show.h"
 #include "../include/auto.h"
@@ -38,6 +44,8 @@ typedef struct bank_database
     int frozen_count;
 } BANK_DATABASE_T, *P_BANK_DATABASE_T, **PP_BANK_DATABASE_T;
 
+extern int write_data(P_BANK_DATABASE_T p_bank_database); //写数据
+extern int read_data(P_BANK_DATABASE_T p_bank_database);
 extern void getbank_card(P_BANK_DATABASE_T p_bank_database);
 
 extern bool system_login();                                         //管理员登陆
@@ -63,10 +71,10 @@ extern int double_menu(P_BANK_DATABASE_T p_bank_database);                   //�
 
 extern int reverse(char *p_left, char *p_right); //数据反转
 
-int auto_all(P_BANK_DATABASE_T p_bank_database);
-void random_name(char save_name[][1024], int num);
-void random_phone(P_BANK_DATABASE_T p_bank_database, int num);
-void random_password(P_BANK_DATABASE_T p_bank_database, int num);
-void auto_getbank_card(P_BANK_DATABASE_T p_bank_database, int num);
+extern int auto_all(P_BANK_DATABASE_T p_bank_database);
+extern void random_name(char save_name[][1024], int num);
+extern void random_phone(P_BANK_DATABASE_T p_bank_database, int num);
+extern void random_password(P_BANK_DATABASE_T p_bank_database, int num);
+extern void auto_getbank_card(P_BANK_DATABASE_T p_bank_database, int num);
 
 #endif
