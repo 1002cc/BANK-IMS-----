@@ -35,8 +35,8 @@ int main(int argc, char *argv[])
         switch (choose1)
         {
         case 0:
-            write_data(p_bank_database);
             data_log1(p_bank_database);
+            write_data(p_bank_database);
             return 0;
             break;
         case 1:

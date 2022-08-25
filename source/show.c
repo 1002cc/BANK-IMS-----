@@ -28,7 +28,7 @@ void admin_menu(void)
 void user_menu(void)
 {
     system("clear");
-    MOVETO(5, 30);
+    MOVETO(5, 28);
     printf("------------银行系统(客户端)-------------\n");
     MOVERIGHT(28);
     printf("---*       1.存钱      2.取钱       *---\n");
@@ -102,14 +102,14 @@ void frist_menu(void)
 void change(void)
 {
     system("clear");
-    MOVETO(5, 30);
+    MOVETO(5, 28);
     printf("------------------修改--------------\n");
     MOVERIGHT(28);
-    printf("---*           1.修改密码        *---\n");
+    printf("---*           1.修改密码       *---\n");
     MOVERIGHT(28);
-    printf("---*          2.修改用户名       *---\n");
+    printf("---*          2.修改用户名      *---\n");
     MOVERIGHT(28);
-    printf("---*         3.修改电话号码      *---\n");
+    printf("---*         3.修改电话号码     *---\n");
     MOVERIGHT(28);
     printf("---*             0.退出         *---\n");
     MOVERIGHT(28);

@@ -861,8 +861,6 @@ int search_money(P_BANK_DATABASE_T p_bank_database, int *xincon) //查看钱
 
 int data_log(P_BANK_DATABASE_T p_bank_database)//日志
 {
-    MOVERIGHT(35);
-    printf("正在保存日志\n");
     struct tm *tmp_ptr;
     time_t tmpcal_ptr;
     time(&tmpcal_ptr);
@@ -879,8 +877,6 @@ int data_log(P_BANK_DATABASE_T p_bank_database)//日志
 
 int data_log1(P_BANK_DATABASE_T p_bank_database)//日志
 {
-    MOVERIGHT(35);
-    printf("正在保存日志\n");
     struct tm *tmp_ptr;
     time_t tmpcal_ptr;
     time(&tmpcal_ptr);
@@ -892,5 +888,21 @@ int data_log1(P_BANK_DATABASE_T p_bank_database)//日志
     fprintf (fp,"日期 :%d.%d.%d 离开系统时间：", (1900+tmp_ptr->tm_year), (1+tmp_ptr->tm_mon), tmp_ptr->tm_mday);
     fprintf(fp,"%d:%d:%d\n", tmp_ptr->tm_hour, tmp_ptr->tm_min, tmp_ptr->tm_sec);
     fprintf(fp, "系统用户人数：%d\n", p_bank_database->user_number);
+    int number=0;
+    FILE *fp1 = fopen("database.txt", "r");
+    if (!fp1)
+        return -1;
+    fscanf(fp1,"%d",&number);
+    printf("%d\n",number);
+    int count = p_bank_database->user_number - number;
+    if (number<(p_bank_database->user_number))
+    {
+       fprintf(fp,"增加了%d位用户\n",count);
+       for (int i = number; i < p_bank_database->user_number ; ++i)
+       {
+        fprintf(fp, "用户名:%s电话号码:%s密码:%s\n银行卡:%s余额:%d\n", p_bank_database->user[i].name, p_bank_database->user[i].phone, p_bank_database->user[i].password, p_bank_database->user[i].bank_card, p_bank_database->user[i].money);
+       }
+       fprintf(fp,"总用户数:%d\n",p_bank_database->user_number);
+    }
     fclose(fp);
 }
