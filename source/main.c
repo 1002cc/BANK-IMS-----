@@ -13,9 +13,12 @@ int main(int argc, char *argv[])
     BANK_DATABASE_T bank_database;
     bzero(&bank_database, sizeof(bank_database));
     P_BANK_DATABASE_T p_bank_database = &bank_database;
-    printf(CLEAR "\n");
     int (*p_func[7])(P_BANK_DATABASE_T) = {open_an_account, account_cancellation, double_menu, search, change_all, auto_all, unfreeze_the_account};
+    system("clear");
+    Boot_animation();
     read_data(p_bank_database);
+    data_log(p_bank_database);
+    sleep(1);
     while (1)
     {
         int choose1 = 0, result = 0;
@@ -33,6 +36,7 @@ int main(int argc, char *argv[])
         {
         case 0:
             write_data(p_bank_database);
+            data_log1(p_bank_database);
             return 0;
             break;
         case 1:

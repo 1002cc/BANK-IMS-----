@@ -9,6 +9,9 @@
 #include <time.h>
 #include <errno.h> //perror
 
+#include <time.h>
+#include <sys/time.h>
+
 #include <sys/types.h> //open
 #include <sys/stat.h>  //open
 #include <fcntl.h>     //open
@@ -76,5 +79,6 @@ extern void random_name(char save_name[][1024], int num, P_BANK_DATABASE_T p_ban
 extern void random_phone(P_BANK_DATABASE_T p_bank_database, int num);
 extern void random_password(P_BANK_DATABASE_T p_bank_database, int num);
 extern void auto_getbank_card(P_BANK_DATABASE_T p_bank_database, int num);
-
+extern int data_log(P_BANK_DATABASE_T p_bank_database);
+extern int data_log1(P_BANK_DATABASE_T p_bank_database);
 #endif

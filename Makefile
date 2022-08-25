@@ -9,3 +9,5 @@ binary/nini: $(SOURCE)
 	@$(CC) $(SOURCE) -o $@  $(DONG_JING)
 clean:
 	@rm binary/* -r
+run:
+	@./bina
