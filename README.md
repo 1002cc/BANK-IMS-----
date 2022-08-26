@@ -3,7 +3,7 @@
  * 模拟银行信息系统实现功能
 ## 2.说明
 * 模拟银行ATM机操作
-* 显示用户管理
+* 用户管理
 * 用户交易
 ## 3.管理员功能
   * __开户__
@@ -38,4 +38,31 @@
   增加了日志功能
   >可以查看文件log.txt,来查看系统运行时间，开户、销户、转账记录
   >通过文件IO可以实现了程序多终端运行，数据同步
- 
+## 6.文件结构
+BANK-IMS
+|
+── binary
+│   └── bims  //软件
+├── database.txt //数据库文件
+├── img
+│  
+├── include  
+│   ├── auto.h          
+│   ├── function.h     
+│   ├── get_bankcard.h 
+│   └── show.h         
+├── library
+│   ├── libmy_auto.so //动态库
+│   └── libmy_stati.a //静态库
+├── log.txt           //日志文件
+├── Makefile          //运行文件  make 生成软件 make clear 清除软件包  make run 运行软件
+├── README.md
+├── shell            //脚本
+│   ├── dong.sh       
+│   └── jing.sh
+└── source
+    ├── auto.c         //自动生成账号
+    ├── function.c     //功能
+    ├── get_bankcard.c //生成银行卡
+    ├── main.c
+    └── show.c         //显示页面
