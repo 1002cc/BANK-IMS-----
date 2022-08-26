@@ -125,6 +125,8 @@ int open_an_account(P_BANK_DATABASE_T p_bank_database) //开户
         scanf("%d", &count1);
         if (count1 == 0)
         {
+            user_log(p_bank_database);
+            write_data(p_bank_database);
             return 1;
         }
         else
@@ -233,6 +235,7 @@ int account_cancellation(P_BANK_DATABASE_T p_bank_database) //销户
             if ((strcmp(delete_account, (p_bank_database->user[i].name)) == 0) || (strcmp(delete_account, (p_bank_database->user[i].phone)) == 0))
             {
                 printf("正在删除----\n");
+                user_log_del(p_bank_database,i);
                 for (int j = 0; j < p_bank_database->user_number; j++)
                 {
                     strcpy((p_bank_database->user[i].name), (p_bank_database->user[i + 1].name));
@@ -253,9 +256,7 @@ int account_cancellation(P_BANK_DATABASE_T p_bank_database) //销户
             printf("没有找到该用户!!\n");
         }
     }
-    printf("正在删除");
-    wiat();
-    sleep(2);
+    sleep(1);
     return 1;
 }
 
@@ -708,6 +709,7 @@ int double_menu(P_BANK_DATABASE_T p_bank_database)
                     break;
                 }
             }
+            write_data(p_bank_database);
             switch (choose1)
             {
             case 0:
@@ -819,6 +821,7 @@ int transfer_accounts(P_BANK_DATABASE_T p_bank_database, int *xincon) //转账
             }
             else
             {
+                user_log_money(p_bank_database,*xincon,k,money);
                 MOVERIGHT(28);
                 printf("正在转账-----\n");
                 p_bank_database->user[k].money += money;
@@ -875,6 +878,57 @@ int data_log(P_BANK_DATABASE_T p_bank_database)//日志
     fclose(fp);
 }
 
+int user_log(P_BANK_DATABASE_T p_bank_database)
+{
+    FILE *fp = fopen("log.txt", "a+");
+    if (!fp)
+        return -1;
+    struct tm *tmp_ptr;
+    time_t tmpcal_ptr;
+    tmp_ptr = gmtime(&tmpcal_ptr);
+    tmp_ptr = localtime(&tmpcal_ptr);
+    fprintf (fp,"开户日期 :%d.%d.%d 开户时间： ", (1900+tmp_ptr->tm_year), (1+tmp_ptr->tm_mon), tmp_ptr->tm_mday);
+    fprintf(fp,"%d:%d:%d\n", tmp_ptr->tm_hour, tmp_ptr->tm_min, tmp_ptr->tm_sec);
+    int i=p_bank_database->user_number-1;
+    fprintf(fp,"增加用户：\n");
+    fprintf(fp, "用户名:%s电话号码:%s密码:%s\n银行卡:%s余额:%d\n", p_bank_database->user[i].name, p_bank_database->user[i].phone, p_bank_database->user[i].password, p_bank_database->user[i].bank_card, p_bank_database->user[i].money);
+    fclose(fp);
+}
+
+int user_log_del(P_BANK_DATABASE_T p_bank_database,int i)
+{
+    FILE *fp = fopen("log.txt", "a+");
+    if (!fp)
+        return -1;
+    struct tm *tmp_ptr;
+    time_t tmpcal_ptr;
+    tmp_ptr = gmtime(&tmpcal_ptr);
+    tmp_ptr = localtime(&tmpcal_ptr);
+    fprintf (fp,"销户日期 :%d.%d.%d 销户时间： ", (1900+tmp_ptr->tm_year), (1+tmp_ptr->tm_mon), tmp_ptr->tm_mday);
+    fprintf(fp,"%d:%d:%d\n", tmp_ptr->tm_hour, tmp_ptr->tm_min, tmp_ptr->tm_sec);
+    fprintf(fp,"注销用户：\n");
+    fprintf(fp, "用户名:%s电话号码:%s密码:%s\n银行卡:%s余额:%d\n", p_bank_database->user[i].name, p_bank_database->user[i].phone, p_bank_database->user[i].password, p_bank_database->user[i].bank_card, p_bank_database->user[i].money);
+    fclose(fp);
+}
+
+int user_log_money(P_BANK_DATABASE_T p_bank_database,int i,int j,int money)
+{
+    FILE *fp = fopen("log.txt", "a+");
+    if (!fp)
+        return -1;
+    struct tm *tmp_ptr;
+    time_t tmpcal_ptr;
+    tmp_ptr = gmtime(&tmpcal_ptr);
+    tmp_ptr = localtime(&tmpcal_ptr);
+    fprintf (fp,"转账日期 :%d.%d.%d 转账时间： ", (1900+tmp_ptr->tm_year), (1+tmp_ptr->tm_mon), tmp_ptr->tm_mday);
+    fprintf(fp,"%d:%d:%d\n", tmp_ptr->tm_hour, tmp_ptr->tm_min, tmp_ptr->tm_sec);
+    fprintf(fp,"客户转账记录：\n");
+    fprintf(fp, "用户名:%s银行卡:%s", p_bank_database->user[i].name, p_bank_database->user[i].bank_card);
+    fprintf(fp, "------>向用户名:%s银行卡:%s", p_bank_database->user[j].name, p_bank_database->user[j].bank_card);
+    fprintf(fp,"转账了%d\n",money);
+    fclose(fp);
+}
+
 int data_log1(P_BANK_DATABASE_T p_bank_database)//日志
 {
     struct tm *tmp_ptr;
@@ -888,21 +942,5 @@ int data_log1(P_BANK_DATABASE_T p_bank_database)//日志
     fprintf (fp,"日期 :%d.%d.%d 离开系统时间：", (1900+tmp_ptr->tm_year), (1+tmp_ptr->tm_mon), tmp_ptr->tm_mday);
     fprintf(fp,"%d:%d:%d\n", tmp_ptr->tm_hour, tmp_ptr->tm_min, tmp_ptr->tm_sec);
     fprintf(fp, "系统用户人数：%d\n", p_bank_database->user_number);
-    int number=0;
-    FILE *fp1 = fopen("database.txt", "r");
-    if (!fp1)
-        return -1;
-    fscanf(fp1,"%d",&number);
-    printf("%d\n",number);
-    int count = p_bank_database->user_number - number;
-    if (number<(p_bank_database->user_number))
-    {
-       fprintf(fp,"增加了%d位用户\n",count);
-       for (int i = number; i < p_bank_database->user_number ; ++i)
-       {
-        fprintf(fp, "用户名:%s电话号码:%s密码:%s\n银行卡:%s余额:%d\n", p_bank_database->user[i].name, p_bank_database->user[i].phone, p_bank_database->user[i].password, p_bank_database->user[i].bank_card, p_bank_database->user[i].money);
-       }
-       fprintf(fp,"总用户数:%d\n",p_bank_database->user_number);
-    }
     fclose(fp);
 }

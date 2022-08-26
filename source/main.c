@@ -47,6 +47,8 @@ int main(int argc, char *argv[])
                 int status = true;
                 while (status)
                 {
+                    read_data(p_bank_database);
+                    write_data(p_bank_database);
                     int result1 = 0;
                     admin_menu();
                     printf("请输入" BLINK ":" DEFAULT_MODE);
@@ -94,6 +96,7 @@ int main(int argc, char *argv[])
             }
             break;
         case 2:
+            read_data(p_bank_database);
             p_func[2](p_bank_database);
             break;
         default:

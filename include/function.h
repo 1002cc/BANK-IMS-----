@@ -81,4 +81,7 @@ extern void random_password(P_BANK_DATABASE_T p_bank_database, int num);
 extern void auto_getbank_card(P_BANK_DATABASE_T p_bank_database, int num);
 extern int data_log(P_BANK_DATABASE_T p_bank_database);
 extern int data_log1(P_BANK_DATABASE_T p_bank_database);
+extern int user_log(P_BANK_DATABASE_T p_bank_database);
+extern int user_log_del(P_BANK_DATABASE_T p_bank_database,int i);
+extern int user_log_money(P_BANK_DATABASE_T p_bank_database,int i,int j,int money);
 #endif
