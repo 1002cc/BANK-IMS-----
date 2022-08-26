@@ -43,26 +43,26 @@ BANK-IMS
 |
 ── binary
 │   └── bims  //软件
-├── database.txt //数据库文件
-├── img
+├── database.txt //数据库文件  
+├── img  
 │  
-├── include  
-│   ├── auto.h          
-│   ├── function.h     
-│   ├── get_bankcard.h 
-│   └── show.h         
-├── library
-│   ├── libmy_auto.so //动态库
-│   └── libmy_stati.a //静态库
-├── log.txt           //日志文件
-├── Makefile          //运行文件  make 生成软件 make clear 清除软件包  make run 运行软件
-├── README.md
-├── shell            //脚本
-│   ├── dong.sh       
-│   └── jing.sh
-└── source
-    ├── auto.c         //自动生成账号
-    ├── function.c     //功能
-    ├── get_bankcard.c //生成银行卡
-    ├── main.c
-    └── show.c         //显示页面
+├── include    
+│   ├── auto.h            
+│   ├── function.h      
+│   ├── get_bankcard.h  
+│   └── show.h          
+├── library  
+│   ├── libmy_auto.so //动态库  
+│   └── libmy_stati.a //静态库  
+├── log.txt           //日志文件   
+├── Makefile          //运行文件  make 生成软件 make clear 清除软件包  make run 运行软件  
+├── README.md  
+├── shell            //脚本  
+│   ├── dong.sh          
+│   └── jing.sh  
+└── source  
+    ├── auto.c         //自动生成账号    
+    ├── function.c     //功能    
+    ├── get_bankcard.c //生成银行卡   
+    ├── main.c  
+    └── show.c         //显示页面   
